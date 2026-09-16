@@ -1,0 +1,27 @@
+Create a professional LinkedIn post based on my real hands-on R&D/Home Lab experience with **[TOPIC]**.
+
+Write it in simple, professional English with a natural human engineering voice.
+
+Structure it as:
+
+**Hook → Real Problem → My R&D Scenario → Technical Implementation → Real Challenge/Troubleshooting → Testing/Validation → Engineering/Industry Relevance → GitHub Resource → Hashtags**
+
+Important:
+
+* Make it feel like a real engineer sharing an actual experience, not a tutorial.
+* Mention real technical components and practical scenarios.
+* Show failures/errors and troubleshooting naturally where relevant.
+* Do not use generic phrases like "I am excited to share" or "This journey taught me."
+* Do not end with a personal learning reflection.
+* Instead, end with **current industry context, real-time infrastructure problems, engineering necessity and automation mindset**.
+* Explain why repeatable infrastructure work should be automated.
+* Highlight **repeatability, consistency, predictability, reproducibility, scalability and better infrastructure management**.
+* Where relevant, connect the topic with **Terraform, OpenTofu, Ansible, Infrastructure as Code (IaC), automation and modern Cloud/DevOps practices**.
+* If AI is relevant, explain that modern AI-driven workloads still depend on automated, scalable and reproducible infrastructure underneath.
+* Position my experience through the work itself, not by making direct claims about my expertise.
+* Keep technical terms in English.
+* Include this GitHub resource:
+  **[GITHUB LINK]**
+* Add 8–12 relevant hashtags.
+
+Make the final post **short, unique, technical, humanized, real-scenario based and ready to publish on LinkedIn.**
