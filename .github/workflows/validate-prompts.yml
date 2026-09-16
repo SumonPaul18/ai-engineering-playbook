@@ -1,0 +1,78 @@
+# .github/workflows/validate-prompts.yml
+name: Validate Prompts & Docs
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'prompts/**'
+      - 'docs/**'
+      - 'automation/**'
+      - 'labs/**'
+      - 'Makefile'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'prompts/**'
+      - 'docs/**'
+      - 'automation/**'
+      - 'labs/**'
+      - 'Makefile'
+
+jobs:
+  validate:
+    name: Validate Prompts & Documentation
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+          
+      - name: Install dependencies
+        run: |
+          pip install mkdocs-material jinja2 pyyaml markdownlint-cli
+          
+      - name: Validate prompt templates
+        run: make prompts-validate
+        
+      - name: Lint documentation
+        run: |
+          find docs/ -name "*.md" -exec markdownlint {} \;
+          
+      - name: Build documentation site
+        run: make docs
+        
+      - name: Upload documentation artifact
+        if: github.ref == 'refs/heads/main'
+        uses: actions/upload-artifact@v4
+        with:
+          name: ai-playbook-docs
+          path: site/
+          retention-days: 30
+
+  test-labs:
+    name: Test Hands-on Labs
+    runs-on: ubuntu-latest
+    needs: validate
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          
+      - name: Run lab validation tests
+        run: make labs-test
+        
+      - name: Report test results
+        if: always()
+        run: echo "Lab validation completed. Check logs for details."

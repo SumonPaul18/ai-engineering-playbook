@@ -1,0 +1,48 @@
+name: AI Playbook CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          
+      - name: Validate Prompts
+        run: make prompts-validate
+        
+      - name: Lint Markdown
+        run: |
+          pip install markdownlint-cli
+          find docs/ -name "*.md" -exec markdownlint {} \;
+
+  test-labs:
+    needs: validate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run Lab Tests
+        run: make labs-test
+
+  deploy-docs:
+    needs: [validate, test-labs]
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build Docs
+        run: make docs
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./site
